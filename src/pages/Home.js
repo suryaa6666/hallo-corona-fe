@@ -2,8 +2,16 @@ import { Box, HStack, Text } from '@chakra-ui/react';
 import Jumbotron from '../components/Jumbotron';
 import CardArticle from '../components/CardArticle';
 import NavbarComponent from '../components/NavbarComponent';
+import { useQuery } from 'react-query';
+import { API } from '../config/api';
 
 function Home() {
+  const { data: dataArticles } = useQuery('articlesCache', async () => {
+    const response = await API.get('/articles');
+    console.log(response);
+    return response.data.data;
+  });
+
   return (
     <>
       <NavbarComponent />
@@ -26,12 +34,14 @@ function Home() {
             justifyContent={'center'}
             alignItems="center"
           >
-            <CardArticle />
-            <CardArticle />
-            <CardArticle />
-            <CardArticle />
-            <CardArticle />
-            <CardArticle />
+            {dataArticles?.map(item => (
+              <CardArticle
+                id={item.id}
+                title={item.title}
+                image={item.image}
+                description={item.description}
+              />
+            ))}
           </HStack>
         </Box>
       </Box>
