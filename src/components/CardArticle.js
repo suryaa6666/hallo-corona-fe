@@ -42,16 +42,19 @@ function CardArticle({ id, title, image, description, category }) {
           py={3}
           alignItems="flex-end"
         >
-          <Badge
-            variant="outline"
-            borderRadius={'20px'}
-            borderColor="#6C6C6C"
-            p={2}
-            mr={3}
-            mt="5px"
-          >
-            Category
-          </Badge>
+          {category.map((item, i) => (
+            <Badge
+              variant="outline"
+              borderRadius={'20px'}
+              borderColor="#6C6C6C"
+              p={2}
+              mr={3}
+              mt="5px"
+              key={i}
+            >
+              {item.name}
+            </Badge>
+          ))}
         </Box>
       </Box>
     </Box>

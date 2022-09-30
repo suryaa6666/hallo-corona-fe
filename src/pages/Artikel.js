@@ -8,11 +8,14 @@ function Artikel() {
   const params = useParams();
   const { id } = params;
 
-  const { data: dataArticle } = useQuery('articleCache', async () => {
-    const response = await API.get(`/article/${id}`);
-    console.log(response);
-    return response.data.data;
-  });
+  const { data: dataArticle, isLoading } = useQuery(
+    'articleCache',
+    async () => {
+      const response = await API.get(`/article/${id}`);
+      console.log(response);
+      return response.data.data;
+    }
+  );
 
   function golangDateConvert(datestr) {
     let convertMonth = month => {
@@ -56,64 +59,73 @@ function Artikel() {
 
   return (
     <>
-      <NavbarComponent />
-      <Box
-        w={'100wh'}
-        display={'flex'}
-        flexDirection="column"
-        pt={'80px'}
-        alignItems="center"
-      >
-        <Box w={'80%'} display="flex" flexDirection={'column'} my={10}>
-          <Text fontWeight="bold" fontSize={'30px'} color="black" mt="5px">
-            {dataArticle?.title}
-          </Text>
-          <Text fontSize={'15px'} color="#6C6C6C" mt="5px">
-            {golangDateConvert(dataArticle?.createdAt)}
-          </Text>
+      {isLoading ? (
+        <></>
+      ) : (
+        <>
+          <NavbarComponent />
           <Box
-            display="flex"
-            w="100%"
-            flexDirection="row"
-            alignItems={'center'}
-            mt="5px"
+            w={'100wh'}
+            display={'flex'}
+            flexDirection="column"
+            pt={'80px'}
+            alignItems="center"
           >
-            <Text fontSize={'15px'} color="#6C6C6C" mr={2}>
-              Author :
-            </Text>
-            <Text fontSize={'15px'} color="#FF6185">
-              {dataArticle?.user?.fullName}
-            </Text>
-          </Box>
-          <Box w={'100%'} boxShadow="md" mt={5} p={10}>
-            <Image
-              src={
-                dataArticle?.image
-                  ? dataArticle.image
-                  : `/assets/images/image-placeholder.png`
-              }
-              w="100%"
-              h="400px"
-              objectFit="cover"
-            />
-            {/* Category Section */}
-            <Box display="flex" flexDirection="row" w="100%" py={10}>
-              <Badge
-                variant="outline"
-                borderRadius={'20px'}
-                borderColor="#6C6C6C"
-                p={2}
-                mr={3}
+            <Box w={'80%'} display="flex" flexDirection={'column'} my={10}>
+              <Text fontWeight="bold" fontSize={'30px'} color="black" mt="5px">
+                {dataArticle?.title}
+              </Text>
+              <Text fontSize={'15px'} color="#6C6C6C" mt="5px">
+                {golangDateConvert(dataArticle?.createdAt)}
+              </Text>
+              <Box
+                display="flex"
+                w="100%"
+                flexDirection="row"
+                alignItems={'center'}
                 mt="5px"
               >
-                Category
-              </Badge>
+                <Text fontSize={'15px'} color="#6C6C6C" mr={2}>
+                  Author :
+                </Text>
+                <Text fontSize={'15px'} color="#FF6185">
+                  {dataArticle?.user?.fullName}
+                </Text>
+              </Box>
+              <Box w={'100%'} boxShadow="md" mt={5} p={10}>
+                <Image
+                  src={
+                    dataArticle?.image
+                      ? dataArticle.image
+                      : `/assets/images/image-placeholder.png`
+                  }
+                  w="100%"
+                  h="400px"
+                  objectFit="cover"
+                />
+                {/* Category Section */}
+                <Box display="flex" flexDirection="row" w="100%" py={10}>
+                  {dataArticle?.category.map((item, i) => (
+                    <Badge
+                      variant="outline"
+                      borderRadius={'20px'}
+                      borderColor="#6C6C6C"
+                      p={2}
+                      mr={3}
+                      mt="5px"
+                      key={i}
+                    >
+                      {item.name}
+                    </Badge>
+                  ))}
+                </Box>
+                {/* Article Section */}
+                <Text>{dataArticle?.description}</Text>
+              </Box>
             </Box>
-            {/* Article Section */}
-            <Text>{dataArticle?.description}</Text>
           </Box>
-        </Box>
-      </Box>
+        </>
+      )}
     </>
   );
 }
