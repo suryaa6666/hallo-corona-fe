@@ -34,12 +34,13 @@ function Home() {
             justifyContent={'center'}
             alignItems="center"
           >
-            {dataArticles?.map(item => (
+            {dataArticles?.map((item, i) => (
               <CardArticle
                 id={item.id}
                 title={item.title}
                 image={item.image}
                 description={item.description}
+                key={i}
               />
             ))}
           </HStack>

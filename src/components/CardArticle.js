@@ -34,7 +34,14 @@ function CardArticle({ id, title, image, description, category }) {
           {cutSentence(description, 70)}
         </Text>
         {/* Category Section */}
-        <Box display="flex" flexDirection="row" w="100%" py={3}>
+        <Box
+          display="flex"
+          flexDirection="row"
+          w="100%"
+          flex={1}
+          py={3}
+          alignItems="flex-end"
+        >
           <Badge
             variant="outline"
             borderRadius={'20px'}
