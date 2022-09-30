@@ -64,11 +64,7 @@ function TambahArtikelAdmin() {
       formData.set('description', dataArtikel?.description);
       formData.set('image', dataArtikel?.image, dataArtikel?.image.name);
       formData.set('categoryId', categoryId);
-      const response = await API.post('/article', formData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-        },
-      });
+      const response = await API.post('/article', formData);
       Success({ message: `Berhasil menambahkan artikel 🤩` });
       console.log(response);
     } catch (err) {

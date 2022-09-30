@@ -25,14 +25,14 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { useContext, useState } from 'react';
+import { BsBook } from 'react-icons/bs';
 import { FaHandsHelping, FaRegUser } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 import { RiArticleLine } from 'react-icons/ri';
-import { BsBook } from 'react-icons/bs';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { API, setAuthorization } from '../config/api';
 import { UserContext } from '../context/userContext';
-import { Success, Error } from '../helpers/toast';
-import { API } from '../config/api';
+import { Error, Success } from '../helpers/toast';
 
 export default function NavbarComponent() {
   const [state, dispatch] = useContext(UserContext);
@@ -68,6 +68,8 @@ export default function NavbarComponent() {
     onOpen: onOpenRegister,
     onClose: onCloseRegister,
   } = useDisclosure();
+
+  const navigate = useNavigate();
 
   function handleChangeLogin(e) {
     setDataLogin({
@@ -105,6 +107,9 @@ export default function NavbarComponent() {
             email: '',
             password: '',
           });
+
+          // jangan lupa langsung set auth tokennya
+          setAuthorization(response.data.data.token);
           Success({ message: `Login berhasil!` });
         })
         .catch(err => {
@@ -170,6 +175,7 @@ export default function NavbarComponent() {
       type: 'LOGOUT_SUCCESS',
     });
     Success({ message: `Logout berhasil!` });
+    navigate('/');
   }
 
   return (
