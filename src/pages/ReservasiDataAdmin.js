@@ -1,9 +1,7 @@
 import {
   Box,
   Button,
-  Image,
-  Input,
-  Modal,
+  Image, Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
@@ -16,10 +14,9 @@ import {
   Th,
   Thead,
   Tr,
-  useDisclosure,
+  useDisclosure
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import NavbarComponent from '../components/NavbarComponent';
 import ReservasiDetailAdmin from '../components/ReservasiDetailAdmin';
 

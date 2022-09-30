@@ -1,6 +1,6 @@
-import { Box, Button, Input, Text, Textarea, Image } from '@chakra-ui/react';
-import NavbarComponent from '../components/NavbarComponent';
+import { Box, Button, Image, Input, Text, Textarea } from '@chakra-ui/react';
 import { useRef, useState } from 'react';
+import NavbarComponent from '../components/NavbarComponent';
 
 function TambahArtikelAdmin() {
   const [preview, setPreview] = useState(null);

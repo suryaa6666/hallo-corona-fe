@@ -1,16 +1,16 @@
 /* eslint-disable */
-import "react-toastify/dist/ReactToastify.css";
-import { Box } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
-import ReactLoading from 'react-loading';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import LoadingComponent from './components/LoadingComponent';
 import { API, setAuthorization } from './config/api';
 import { UserContext } from './context/userContext';
 import { Error } from './helpers/toast';
 import Artikel from './pages/Artikel';
 import Home from './pages/Home';
 import Konsultasi from './pages/Konsultasi';
+import { IsDoctor, IsLogin } from './pages/PrivateRoute';
 import Profil from './pages/Profil';
 import Reservasi from './pages/Reservasi';
 import ReservasiDataAdmin from './pages/ReservasiDataAdmin';
@@ -77,32 +77,28 @@ function App() {
   return (
     <>
       {isLoading ? (
-        <Box
-          bg="white"
-          display="flex"
-          w="100wh"
-          h="100vh"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <ReactLoading
-            type={'spinningBubbles'}
-            color={'#FF6185'}
-            height={100}
-            width={100}
-          />
-        </Box>
+        <LoadingComponent />
       ) : (
         <>
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/artikel/:id" element={<Artikel />} />
-              <Route path="/profil" element={<Profil />} />
               <Route path="/reservasi" element={<Reservasi />} />
-              <Route path="/konsultasi" element={<Konsultasi />} />
-              <Route path="/reservasi-data" element={<ReservasiDataAdmin />} />
-              <Route path="/tambah-artikel" element={<TambahArtikelAdmin />} />
+              <Route path="/" element={<IsLogin />}>
+                <Route path="/profil" element={<Profil />} />
+                <Route path="/konsultasi" element={<Konsultasi />} />
+                <Route path="/" element={<IsDoctor />}>
+                  <Route
+                    path="/reservasi-data"
+                    element={<ReservasiDataAdmin />}
+                  />
+                  <Route
+                    path="/tambah-artikel"
+                    element={<TambahArtikelAdmin />}
+                  />
+                </Route>
+              </Route>
             </Routes>
           </BrowserRouter>
           <ToastContainer

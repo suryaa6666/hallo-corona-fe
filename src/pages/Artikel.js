@@ -3,6 +3,7 @@ import NavbarComponent from '../components/NavbarComponent';
 import { useQuery } from 'react-query';
 import { API } from '../config/api';
 import { useParams } from 'react-router-dom';
+import LoadingComponent from '../components/LoadingComponent';
 
 function Artikel() {
   const params = useParams();
@@ -60,7 +61,7 @@ function Artikel() {
   return (
     <>
       {isLoading ? (
-        <></>
+        <LoadingComponent />
       ) : (
         <>
           <NavbarComponent />
