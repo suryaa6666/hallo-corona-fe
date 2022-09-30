@@ -41,6 +41,8 @@ function Artikel() {
           return 'November';
         case 11:
           return 'Desember';
+        default:
+          return 'Unknown';
       }
     };
 
