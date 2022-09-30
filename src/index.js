@@ -20,6 +20,16 @@ const theme = extendTheme({
     heading: `'Open Sans', sans-serif`,
     body: `'Open Sans', sans-serif`,
   },
+  components: {
+    Checkbox: {
+      baseStyle: {
+        control: {
+          bg: 'white',
+          borderColor: '#B5B5B5',
+        },
+      },
+    },
+  },
 });
 
 const client = new QueryClient();

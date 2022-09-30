@@ -28,6 +28,7 @@ import { useContext, useState } from 'react';
 import { FaHandsHelping, FaRegUser } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 import { RiArticleLine } from 'react-icons/ri';
+import { BsBook } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../context/userContext';
 import { Success, Error } from '../helpers/toast';
@@ -268,6 +269,16 @@ export default function NavbarComponent() {
                         Profil
                       </MenuItem>
                     </Link>
+                    <Link to="/reservasi-data">
+                      <MenuItem>
+                        <BsBook
+                          size={24}
+                          color={'#FF6185'}
+                          style={{ marginRight: '5px' }}
+                        />
+                        Reservasi Data
+                      </MenuItem>
+                    </Link>
                     <Link to="/tambah-artikel">
                       <MenuItem>
                         <RiArticleLine
@@ -333,7 +344,11 @@ export default function NavbarComponent() {
       </Box>
 
       {/* Modal Login */}
-      <Modal isOpen={isOpenLogin} onClose={onCloseLogin} blockScrollOnMount={false}>
+      <Modal
+        isOpen={isOpenLogin}
+        onClose={onCloseLogin}
+        blockScrollOnMount={false}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
@@ -413,7 +428,11 @@ export default function NavbarComponent() {
       </Modal>
 
       {/* Modal Register */}
-      <Modal isOpen={isOpenRegister} onClose={onCloseRegister} blockScrollOnMount={false}>
+      <Modal
+        isOpen={isOpenRegister}
+        onClose={onCloseRegister}
+        blockScrollOnMount={false}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
