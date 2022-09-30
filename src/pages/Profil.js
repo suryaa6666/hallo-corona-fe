@@ -1,7 +1,11 @@
 import { Box, Button, Image, Text } from '@chakra-ui/react';
+import { useContext } from 'react';
 import NavbarComponent from '../components/NavbarComponent';
+import { UserContext } from '../context/userContext';
 
 function Profil() {
+  const [state] = useContext(UserContext);
+
   return (
     <>
       <NavbarComponent />
@@ -22,7 +26,7 @@ function Profil() {
         >
           <Box display="flex" flexDirection={'column'} p={10} flex={2}>
             <Text fontWeight={'bold'} fontSize="25px">
-              Personal Info
+              Info Pribadi
             </Text>
             <Box display="flex" mt={5} flexDirection="row">
               <Box
@@ -40,7 +44,7 @@ function Profil() {
                 />
                 <Box display="flex" flexDirection={'column'}>
                   <Text fontSize="15px" fontWeight="bold" color="black">
-                    Surya Gans
+                    {state.user.fullName}
                   </Text>
                   <Text fontSize="10px" color="#8A8C90">
                     Nama Lengkap
@@ -65,7 +69,7 @@ function Profil() {
                 />
                 <Box display="flex" flexDirection={'column'}>
                   <Text fontSize="15px" fontWeight="bold" color="black">
-                    suryagans@gmail.com
+                    {state.user.email}
                   </Text>
                   <Text fontSize="10px" color="#8A8C90">
                     Email
@@ -90,7 +94,7 @@ function Profil() {
                 />
                 <Box display="flex" flexDirection={'column'}>
                   <Text fontSize="15px" fontWeight="bold" color="black">
-                    Pasien
+                    {state.user.listAs}
                   </Text>
                   <Text fontSize="10px" color="#8A8C90">
                     Status
@@ -115,7 +119,9 @@ function Profil() {
                 />
                 <Box display="flex" flexDirection={'column'}>
                   <Text fontSize="15px" fontWeight="bold" color="black">
-                    Pria
+                    {state.user.fullName.toLowerCase() === 'male'
+                      ? 'Pria'
+                      : 'Wanita'}
                   </Text>
                   <Text fontSize="10px" color="#8A8C90">
                     Gender
@@ -140,7 +146,7 @@ function Profil() {
                 />
                 <Box display="flex" flexDirection={'column'}>
                   <Text fontSize="15px" fontWeight="bold" color="black">
-                    089514043621
+                    {state.user.phone}
                   </Text>
                   <Text fontSize="10px" color="#8A8C90">
                     No. Telepon
@@ -165,7 +171,7 @@ function Profil() {
                 />
                 <Box display="flex" flexDirection={'column'}>
                   <Text fontSize="15px" fontWeight="bold" color="black">
-                    Jln. Jantera No. 04 Kalimanah
+                    {state.user.address}
                   </Text>
                   <Text fontSize="10px" color="#8A8C90">
                     Alamat
@@ -177,7 +183,13 @@ function Profil() {
           {/* Gambar Profil */}
           <Box flex={1} my={10} mr={10}>
             <Image
-              src="/assets/images/image-placeholder.png"
+              src={
+                state.user.image
+                  ? state.user.image
+                  : state.user.gender.toLowerCase() === 'male'
+                  ? `/assets/images/male-userimage-placeholder.jpg`
+                  : `/assets/images/female-userimage-placeholder.jpg`
+              }
               w="100%"
               h="350px"
               objectFit="cover"

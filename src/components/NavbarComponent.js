@@ -216,7 +216,11 @@ export default function NavbarComponent() {
                     size={'md'}
                     border="3px solid #FF6185"
                     src={
-                      'https://i.pinimg.com/736x/b5/90/b5/b590b514aaa50668125f87a200e8854a.jpg'
+                      state.user.image
+                        ? state.user.image
+                        : state.user.gender.toLowerCase() === 'male'
+                        ? `/assets/images/male-userimage-placeholder.jpg`
+                        : `/assets/images/female-userimage-placeholder.jpg`
                     }
                   />
                 </MenuButton>
@@ -329,7 +333,7 @@ export default function NavbarComponent() {
       </Box>
 
       {/* Modal Login */}
-      <Modal isOpen={isOpenLogin} onClose={onCloseLogin}>
+      <Modal isOpen={isOpenLogin} onClose={onCloseLogin} blockScrollOnMount={false}>
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
@@ -409,7 +413,7 @@ export default function NavbarComponent() {
       </Modal>
 
       {/* Modal Register */}
-      <Modal isOpen={isOpenRegister} onClose={onCloseRegister}>
+      <Modal isOpen={isOpenRegister} onClose={onCloseRegister} blockScrollOnMount={false}>
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
