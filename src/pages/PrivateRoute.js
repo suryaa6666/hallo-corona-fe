@@ -4,7 +4,7 @@ import { UserContext } from '../context/userContext';
 import { Error } from '../helpers/toast';
 
 export function IsLogin() {
-  const [state, dispatch] = useContext(UserContext);
+  const [state] = useContext(UserContext);
 
   if (!state.isLogin) {
     Error({ message: `Halaman tidak ditemukan!` });
@@ -15,7 +15,7 @@ export function IsLogin() {
 }
 
 export function IsDoctor() {
-  const [state, dispatch] = useContext(UserContext);
+  const [state] = useContext(UserContext);
 
   if (!state.isDoctor) {
     Error({ message: `Halaman tidak ditemukan!` });
