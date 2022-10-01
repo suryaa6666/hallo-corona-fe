@@ -66,9 +66,12 @@ export function milisToDate(milis) {
         return 'November';
       case 11:
         return 'Desember';
+      default:
+        return 'Unknown';
     }
   };
-  return `${date.getDate()} ${convertMonth(
-    date.getMonth()
-  )} ${date.getFullYear()}`;
+
+  let dateNumber = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+
+  return `${dateNumber} ${convertMonth(date.getMonth())} ${date.getFullYear()}`;
 }

@@ -121,138 +121,178 @@ function Konsultasi() {
                             p={3}
                           >
                             {item.reply.id !== 0 ? (
-                              <>
-                                <Box
-                                  w={'100%'}
-                                  display="flex"
-                                  flexDirection="row"
-                                  alignItems="center"
-                                  justifyContent="center"
+                              item.status.toLowerCase() === 'cancel' ? (
+                                <Text
+                                  fontWeight="bold"
+                                  fontSize="20px"
+                                  color="#6C6C6C"
                                 >
+                                  Permintaan anda tidak disetujui ❌
+                                </Text>
+                              ) : (
+                                <>
                                   <Box
-                                    flex={1}
+                                    w={'100%'}
                                     display="flex"
-                                    justifyContent="center"
+                                    flexDirection="row"
                                     alignItems="center"
+                                    justifyContent="center"
                                   >
-                                    <Avatar
-                                      size={'md'}
-                                      mr={2}
-                                      w={'75px'}
-                                      h={'75px'}
-                                      border="3px solid #FF6185"
-                                      src={
-                                        item.reply.user.image
-                                          ? item.reply.user.image
-                                          : item.reply.user.gender.toLowerCase() ===
-                                            'male'
-                                          ? `/assets/images/male-userimage-placeholder.jpg`
-                                          : `/assets/images/female-userimage-placeholder.jpg`
-                                      }
-                                    />
-                                  </Box>
-                                  <Box
-                                    display="flex"
-                                    flexDirection="column"
-                                    flex={5}
-                                  >
-                                    <Text fontSize="15px" color="black">
-                                      {item.reply.response}
-                                    </Text>
-                                    {item.reply.meetType === 'Google Meet' ? (
-                                      <Button
-                                        bg="#FFF"
-                                        mt={3}
-                                        w="200px"
-                                        borderWidth={2}
-                                        borderColor={'#FF6185'}
-                                        h="50px"
-                                        fontSize="20px"
-                                        fontWeight="bold"
-                                        _hover={{ backgroundColor: '#e6e6e6' }}
-                                        color="#FF6185"
-                                        onClick={() =>
-                                          window.open(
-                                            `${item.reply.meetLink}`,
-                                            '_blank'
-                                          )
+                                    <Box
+                                      flex={1}
+                                      display="flex"
+                                      justifyContent="center"
+                                      alignItems="center"
+                                    >
+                                      <Avatar
+                                        size={'md'}
+                                        mr={2}
+                                        w={'75px'}
+                                        h={'75px'}
+                                        border="3px solid #FF6185"
+                                        src={
+                                          item.reply.user.image
+                                            ? item.reply.user.image
+                                            : item.reply.user.gender.toLowerCase() ===
+                                              'male'
+                                            ? `/assets/images/male-userimage-placeholder.jpg`
+                                            : `/assets/images/female-userimage-placeholder.jpg`
                                         }
-                                      >
-                                        <Image
-                                          src="/assets/images/gmeet-icon.png"
-                                          w="50px"
+                                      />
+                                    </Box>
+                                    <Box
+                                      display="flex"
+                                      flexDirection="column"
+                                      flex={5}
+                                    >
+                                      <Text fontSize="15px" color="black">
+                                        {item.reply.response}
+                                      </Text>
+                                      {item.reply.meetType === 'Google Meet' ? (
+                                        <Button
+                                          bg="#FFF"
+                                          mt={3}
+                                          w="200px"
+                                          borderWidth={2}
+                                          borderColor={'#FF6185'}
                                           h="50px"
-                                          objectFit="contain"
-                                        />
-                                        Google Meet
-                                      </Button>
-                                    ) : item.reply.meetType === 'Zoom' ? (
-                                      <Button
-                                        bg="#FFF"
-                                        mt={3}
-                                        w="200px"
-                                        borderWidth={2}
-                                        borderColor={'#FF6185'}
-                                        h="50px"
-                                        fontSize="20px"
-                                        fontWeight="bold"
-                                        _hover={{ backgroundColor: '#e6e6e6' }}
-                                        color="#FF6185"
-                                        onClick={() =>
-                                          window.open(
-                                            `${item.reply.meetLink}`,
-                                            '_blank'
-                                          )
-                                        }
-                                      >
-                                        <Image
-                                          src="/assets/images/zoom-icon.png"
-                                          w="35px"
-                                          h="35px"
-                                          mr={2}
-                                          objectFit="contain"
-                                        />
-                                        Zoom
-                                      </Button>
-                                    ) : (
-                                      <Button
-                                        bg="#FFF"
-                                        mt={3}
-                                        w="200px"
-                                        borderWidth={2}
-                                        borderColor={'#FF6185'}
-                                        h="50px"
-                                        fontSize="20px"
-                                        fontWeight="bold"
-                                        _hover={{ backgroundColor: '#e6e6e6' }}
-                                        color="#FF6185"
-                                        onClick={() =>
-                                          window.open(
-                                            `${item.reply.meetLink}`,
-                                            '_blank'
-                                          )
-                                        }
-                                      >
-                                        <Image
-                                          src="/assets/images/external-icon.png"
-                                          w="25px"
-                                          h="25px"
-                                          mr={2}
-                                          objectFit="contain"
-                                        />
-                                        Meet
-                                      </Button>
-                                    )}
+                                          fontSize="20px"
+                                          fontWeight="bold"
+                                          _hover={{
+                                            backgroundColor: '#e6e6e6',
+                                          }}
+                                          color="#FF6185"
+                                          onClick={() => {
+                                            window.open(
+                                              item.reply.meetLink.includes(
+                                                'http://'
+                                              )
+                                                ? `${item.reply.meetLink}`
+                                                : item.reply.meetLink.includes(
+                                                    'https://'
+                                                  )
+                                                ? `${item.reply.meetLink}`
+                                                : `https://${item.reply.meetLink}`,
+                                              '_blank'
+                                            );
+                                          }}
+                                        >
+                                          <Image
+                                            src="/assets/images/gmeet-icon.png"
+                                            w="50px"
+                                            h="50px"
+                                            objectFit="contain"
+                                          />
+                                          Google Meet
+                                        </Button>
+                                      ) : item.reply.meetType === 'Zoom' ? (
+                                        <Button
+                                          bg="#FFF"
+                                          mt={3}
+                                          w="200px"
+                                          borderWidth={2}
+                                          borderColor={'#FF6185'}
+                                          h="50px"
+                                          fontSize="20px"
+                                          fontWeight="bold"
+                                          _hover={{
+                                            backgroundColor: '#e6e6e6',
+                                          }}
+                                          color="#FF6185"
+                                          onClick={() => {
+                                            window.open(
+                                              item.reply.meetLink.includes(
+                                                'http://'
+                                              )
+                                                ? `${item.reply.meetLink}`
+                                                : item.reply.meetLink.includes(
+                                                    'https://'
+                                                  )
+                                                ? `${item.reply.meetLink}`
+                                                : `https://${item.reply.meetLink}`,
+                                              '_blank'
+                                            );
+                                          }}
+                                        >
+                                          <Image
+                                            src="/assets/images/zoom-icon.png"
+                                            w="35px"
+                                            h="35px"
+                                            mr={2}
+                                            objectFit="contain"
+                                          />
+                                          Zoom
+                                        </Button>
+                                      ) : (
+                                        <Button
+                                          bg="#FFF"
+                                          mt={3}
+                                          w="200px"
+                                          borderWidth={2}
+                                          borderColor={'#FF6185'}
+                                          h="50px"
+                                          fontSize="20px"
+                                          fontWeight="bold"
+                                          _hover={{
+                                            backgroundColor: '#e6e6e6',
+                                          }}
+                                          color="#FF6185"
+                                          onClick={() => {
+                                            window.open(
+                                              item.reply.meetLink.includes(
+                                                'http://'
+                                              )
+                                                ? `${item.reply.meetLink}`
+                                                : item.reply.meetLink.includes(
+                                                    'https://'
+                                                  )
+                                                ? `${item.reply.meetLink}`
+                                                : `https://${item.reply.meetLink}`,
+                                              '_blank'
+                                            );
+                                          }}
+                                        >
+                                          <Image
+                                            src="/assets/images/external-icon.png"
+                                            w="25px"
+                                            h="25px"
+                                            mr={2}
+                                            objectFit="contain"
+                                          />
+                                          Meet
+                                        </Button>
+                                      )}
+                                    </Box>
                                   </Box>
-                                </Box>
-                              </>
+                                </>
+                              )
                             ) : (
                               <Text
                                 fontWeight="bold"
                                 fontSize="20px"
                                 color="#6C6C6C"
                               >
-                                Meunggu Balasan ⌛
+                                Menunggu Balasan ⌛
                               </Text>
                             )}
                           </Box>

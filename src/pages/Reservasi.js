@@ -258,8 +258,8 @@ function Artikel() {
                 name="gender"
                 onChange={handleChange}
               >
-                <option value="pria">Pria</option>
-                <option value="wanita">Wanita</option>
+                <option value="male">Pria</option>
+                <option value="female">Wanita</option>
               </Select>
             </Box>
 
