@@ -11,6 +11,9 @@ import {
 import NavbarComponent from '../components/NavbarComponent';
 import { useEffect, useState } from 'react';
 import { SingleDatepicker } from 'chakra-dayzed-datepicker';
+import { useNavigate } from 'react-router-dom';
+import { Success, Error } from '../helpers/toast';
+import { API } from '../config/api';
 
 function Artikel() {
   const [dataReservasi, setDataReservasi] = useState({
@@ -25,6 +28,8 @@ function Artikel() {
     liveConsultation: new Date(),
     description: '',
   });
+
+  const navigate = useNavigate();
 
   function handleChange(e) {
     setDataReservasi({
@@ -69,9 +74,41 @@ function Artikel() {
     handleChangeAge();
   }, [dataReservasi.bornDate]);
 
-  function handleSubmit() {
-    // kasi check kalau dia belum milih tanggal / belum milis maka dilarang post
+  async function handleSubmit() {
     console.log('ini data reservasi sekarang', dataReservasi);
+    try {
+      const body = {
+        fullName: dataReservasi.fullName,
+        phone: dataReservasi.phone,
+        bornDate: dataReservasi.bornDate,
+        age: parseInt(dataReservasi.age),
+        height: parseInt(dataReservasi.height),
+        weight: parseInt(dataReservasi.weight),
+        gender: dataReservasi.gender,
+        subject: dataReservasi.subject,
+        liveConsultation: dataReservasi.liveConsultation,
+        description: dataReservasi.description,
+      };
+      
+      const response = await API.post('/consultation', body);
+      console.log(response);
+      setDataReservasi({
+        fullName: '',
+        phone: '',
+        bornDate: new Date(),
+        age: '',
+        height: '',
+        weight: '',
+        gender: '',
+        subject: '',
+        liveConsultation: new Date(),
+        description: '',
+      });
+      Success({ message: `Berhasil menambahkan data konsultasi!` });
+      navigate('/konsultasi');
+    } catch (err) {
+      Error({ message: 'Gagal menambahkan data!' });
+    }
   }
 
   return (
