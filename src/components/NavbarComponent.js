@@ -378,7 +378,7 @@ export default function NavbarComponent() {
                 name="email"
                 onChange={handleChangeLogin}
                 onKeyDown={e => {
-                  if (e.key == 'Enter') handleSubmitLogin();
+                  if (e.key === 'Enter') handleSubmitLogin();
                 }}
               />
             </Box>
@@ -398,7 +398,7 @@ export default function NavbarComponent() {
                 name="password"
                 onChange={handleChangeLogin}
                 onKeyDown={e => {
-                  if (e.key == 'Enter') handleSubmitLogin();
+                  if (e.key === 'Enter') handleSubmitLogin();
                 }}
               />
             </Box>

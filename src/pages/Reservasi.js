@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
   Box,
   Text,
@@ -89,7 +90,7 @@ function Artikel() {
         liveConsultation: dataReservasi.liveConsultation,
         description: dataReservasi.description,
       };
-      
+
       const response = await API.post('/consultation', body);
       console.log(response);
       setDataReservasi({
