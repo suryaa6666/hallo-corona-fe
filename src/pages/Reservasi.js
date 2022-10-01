@@ -1,7 +1,79 @@
-import { Box, Text, Input, Select, Textarea, Button } from '@chakra-ui/react';
+import {
+  Box,
+  Text,
+  Input,
+  Select,
+  Textarea,
+  Button,
+  NumberInput,
+  NumberInputField,
+} from '@chakra-ui/react';
 import NavbarComponent from '../components/NavbarComponent';
+import { useEffect, useState } from 'react';
+import { SingleDatepicker } from 'chakra-dayzed-datepicker';
 
 function Artikel() {
+  const [dataReservasi, setDataReservasi] = useState({
+    fullName: '',
+    phone: '',
+    bornDate: new Date(),
+    age: '',
+    height: '',
+    weight: '',
+    gender: '',
+    subject: '',
+    liveConsultation: new Date(),
+    description: '',
+  });
+
+  function handleChange(e) {
+    setDataReservasi({
+      ...dataReservasi,
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  function handleChangeDate(value, name) {
+    if (name === 'bornDate') {
+      let bornDateToMilis = new Date(value).getTime();
+      setDataReservasi({
+        ...dataReservasi,
+        bornDate: bornDateToMilis,
+      });
+    }
+
+    if (name === 'liveConsultation') {
+      let liveConsultationToMilis = new Date(value).getTime();
+      setDataReservasi({
+        ...dataReservasi,
+        liveConsultation: liveConsultationToMilis,
+      });
+    }
+
+    console.log(dataReservasi);
+  }
+
+  function handleChangeAge() {
+    console.log('born date', dataReservasi.bornDate);
+    let yearNow = new Date().getFullYear();
+    // selisih year lahir dan year sekarang
+    let calculateAge = yearNow - new Date(dataReservasi.bornDate).getFullYear();
+
+    setDataReservasi({
+      ...dataReservasi,
+      age: calculateAge,
+    });
+  }
+
+  useEffect(() => {
+    handleChangeAge();
+  }, [dataReservasi.bornDate]);
+
+  function handleSubmit() {
+    // kasi check kalau dia belum milih tanggal / belum milis maka dilarang post
+    console.log('ini data reservasi sekarang', dataReservasi);
+  }
+
   return (
     <>
       <NavbarComponent />
@@ -29,28 +101,17 @@ function Artikel() {
                 bg="#E1E1E1"
                 borderWidth={'2px'}
                 borderColor="#B5B5B5"
+                name="fullName"
+                onChange={handleChange}
               />
             </Box>
             <Box display="flex" w="100%" py={3} flexDirection="column">
               <Text fontWeight="bold" fontSize={'15px'} color="#000">
                 Nomor Telepon
               </Text>
-              <Input
-                w="100%"
-                h="30px"
-                mt={2}
-                p={4}
-                bg="#E1E1E1"
-                borderWidth={'2px'}
-                borderColor="#B5B5B5"
-              />
-            </Box>
-            <Box display="flex" w="100%" py={3} flexDirection="row">
-              <Box display="flex" flex={3} py={3} flexDirection="column" mr={3}>
-                <Text fontWeight="bold" fontSize={'15px'} color="#000">
-                  Tanggal Lahir
-                </Text>
-                <Input
+              <NumberInput>
+                <NumberInputField
+                  maxLength={15}
                   w="100%"
                   h="30px"
                   mt={2}
@@ -58,6 +119,30 @@ function Artikel() {
                   bg="#E1E1E1"
                   borderWidth={'2px'}
                   borderColor="#B5B5B5"
+                  name="phone"
+                  onChange={handleChange}
+                />
+              </NumberInput>
+            </Box>
+            <Box display="flex" w="100%" py={3} flexDirection="row">
+              <Box display="flex" flex={3} py={3} flexDirection="column" mr={3}>
+                <Text fontWeight="bold" fontSize={'15px'} color="#000">
+                  Tanggal Lahir
+                </Text>
+                <SingleDatepicker
+                  date={dataReservasi.bornDate}
+                  onDateChange={value => handleChangeDate(value, 'bornDate')}
+                  propsConfigs={{
+                    inputProps: {
+                      bg: '#E1E1E1',
+                      borderWidth: '2px',
+                      borderColor: '#B5B5B5',
+                      h: '30px',
+                      w: '100%',
+                      p: 4,
+                      mt: 2,
+                    },
+                  }}
                 />
               </Box>
 
@@ -65,45 +150,60 @@ function Artikel() {
                 <Text fontWeight="bold" fontSize={'15px'} color="#000">
                   Umur
                 </Text>
-                <Input
-                  w="100%"
-                  h="30px"
-                  mt={2}
-                  p={4}
-                  bg="#E1E1E1"
-                  borderWidth={'2px'}
-                  borderColor="#B5B5B5"
-                />
+                <NumberInput value={dataReservasi.age}>
+                  <NumberInputField
+                    disabled
+                    _disabled={{ bg: '#bdbdbd' }}
+                    maxLength={2}
+                    w="100%"
+                    h="30px"
+                    mt={2}
+                    p={4}
+                    bg="#E1E1E1"
+                    borderWidth={'2px'}
+                    borderColor="#B5B5B5"
+                  />
+                </NumberInput>
               </Box>
 
               <Box display="flex" flex={2} py={3} flexDirection="column" mr={3}>
                 <Text fontWeight="bold" fontSize={'15px'} color="#000">
                   Tinggi Badan
                 </Text>
-                <Input
-                  w="100%"
-                  h="30px"
-                  mt={2}
-                  p={4}
-                  bg="#E1E1E1"
-                  borderWidth={'2px'}
-                  borderColor="#B5B5B5"
-                />
+                <NumberInput>
+                  <NumberInputField
+                    maxLength={3}
+                    w="100%"
+                    h="30px"
+                    mt={2}
+                    p={4}
+                    bg="#E1E1E1"
+                    borderWidth={'2px'}
+                    borderColor="#B5B5B5"
+                    name="height"
+                    onChange={handleChange}
+                  />
+                </NumberInput>
               </Box>
 
               <Box display="flex" flex={2} py={3} flexDirection="column">
                 <Text fontWeight="bold" fontSize={'15px'} color="#000">
                   Berat Badan
                 </Text>
-                <Input
-                  w="100%"
-                  h="30px"
-                  mt={2}
-                  p={4}
-                  bg="#E1E1E1"
-                  borderWidth={'2px'}
-                  borderColor="#B5B5B5"
-                />
+                <NumberInput>
+                  <NumberInputField
+                    maxLength={3}
+                    w="100%"
+                    h="30px"
+                    mt={2}
+                    p={4}
+                    bg="#E1E1E1"
+                    borderWidth={'2px'}
+                    borderColor="#B5B5B5"
+                    name="weight"
+                    onChange={handleChange}
+                  />
+                </NumberInput>
               </Box>
             </Box>
             <Box display="flex" w="100%" py={3} flexDirection="column">
@@ -117,6 +217,8 @@ function Artikel() {
                 bg="#E1E1E1"
                 borderWidth={'2px'}
                 borderColor="#B5B5B5"
+                name="gender"
+                onChange={handleChange}
               >
                 <option value="pria">Pria</option>
                 <option value="wanita">Wanita</option>
@@ -135,6 +237,8 @@ function Artikel() {
                 bg="#E1E1E1"
                 borderWidth={'2px'}
                 borderColor="#B5B5B5"
+                name="subject"
+                onChange={handleChange}
               />
             </Box>
 
@@ -142,14 +246,22 @@ function Artikel() {
               <Text fontWeight="bold" fontSize={'15px'} color="#000">
                 Tanggal Konsultasi Langsung
               </Text>
-              <Input
-                w="100%"
-                h="30px"
-                mt={2}
-                p={4}
-                bg="#E1E1E1"
-                borderWidth={'2px'}
-                borderColor="#B5B5B5"
+              <SingleDatepicker
+                date={dataReservasi.liveConsultation}
+                onDateChange={value =>
+                  handleChangeDate(value, 'liveConsultation')
+                }
+                propsConfigs={{
+                  inputProps: {
+                    bg: '#E1E1E1',
+                    borderWidth: '2px',
+                    borderColor: '#B5B5B5',
+                    h: '30px',
+                    w: '100%',
+                    p: 4,
+                    mt: 2,
+                  },
+                }}
               />
             </Box>
 
@@ -165,6 +277,8 @@ function Artikel() {
                 bg="#E1E1E1"
                 borderWidth={'2px'}
                 borderColor="#B5B5B5"
+                name="description"
+                onChange={handleChange}
               />
             </Box>
           </Box>
@@ -177,6 +291,7 @@ function Artikel() {
             fontWeight="bold"
             colorScheme="pink"
             _hover={{ backgroundColor: '#e35979' }}
+            onClick={handleSubmit}
           >
             Send
           </Button>

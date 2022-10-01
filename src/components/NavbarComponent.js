@@ -377,6 +377,9 @@ export default function NavbarComponent() {
                 type={'email'}
                 name="email"
                 onChange={handleChangeLogin}
+                onKeyDown={e => {
+                  if (e.key == 'Enter') handleSubmitLogin();
+                }}
               />
             </Box>
             <Box display="flex" w="100%" py={1} flexDirection="column">
@@ -394,6 +397,9 @@ export default function NavbarComponent() {
                 type={'password'}
                 name="password"
                 onChange={handleChangeLogin}
+                onKeyDown={e => {
+                  if (e.key == 'Enter') handleSubmitLogin();
+                }}
               />
             </Box>
             <Button
