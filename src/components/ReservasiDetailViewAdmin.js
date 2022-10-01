@@ -1,6 +1,8 @@
 import {
   Box,
   Button,
+  Input,
+  Select,
   Table,
   TableContainer,
   Tbody,
@@ -10,75 +12,21 @@ import {
   Th,
   Thead,
   Tr,
-  Select,
-  Input,
 } from '@chakra-ui/react';
-import { useState } from 'react';
 import { useQuery } from 'react-query';
-import LoadingComponent from '../components/LoadingComponent';
 import { API } from '../config/api';
 import { golangDateConvert, milisToDate } from '../helpers/converter';
-import { Success, Error } from '../helpers/toast';
+import LoadingComponent from './LoadingComponent';
 
-function ReservasiDetailAdmin({ detailId, onClose, refetchDataReservasi }) {
+function ReservasiDetailViewAdmin({ detailId }) {
   let { data: dataReservasiDetail, isLoading } = useQuery(
-    'reservasiDetailCaches',
+    'reservasiDetailViewCaches',
     async () => {
       const response = await API.get(`/consultation/${detailId}`);
       console.log('data detail', response.data.data);
       return response.data.data;
     }
   );
-
-  const [dataReservasi, setDataReservasi] = useState({
-    response: '',
-    meetType: '',
-    meetLink: '',
-  });
-
-  function handleChange(e) {
-    setDataReservasi({
-      ...dataReservasi,
-      [e.target.name]: e.target.value,
-    });
-  }
-
-  async function handleSubmit() {
-    try {
-      // add reply
-      const replyResponse = await API.post('/reply', dataReservasi);
-      // terus id nya diminta buat ngeupdate statusnya
-      console.log('reply response', replyResponse);
-      const consultationResponse = await API.patch(
-        `/consultationstatus/${detailId}`,
-        {
-          status: 'success',
-          replyId: replyResponse.data.data.id,
-        }
-      );
-      console.log('consultation response', consultationResponse);
-      Success({ message: `Berhasil menambahkan tanggapan 🤩` });
-      refetchDataReservasi();
-      onClose();
-    } catch (err) {
-      Error({ message: `Tanggapan gagal ditambahkan 😥` });
-      console.log(err);
-    }
-  }
-
-  async function handleSubmitCancel() {
-    try {
-      await API.patch(`/consultationstatus/${detailId}`, {
-        status: 'cancel',
-      });
-      Success({ message: `Berhasil membatalkan konsultasi user 🤩` });
-      refetchDataReservasi();
-      onClose();
-    } catch (err) {
-      Error({ message: `Status konsultasi gagal diubah 😥` });
-      console.log(err);
-    }
-  }
 
   return (
     <>
@@ -183,8 +131,8 @@ function ReservasiDetailAdmin({ detailId, onClose, refetchDataReservasi }) {
                 bg="#E1E1E1"
                 borderWidth={'2px'}
                 borderColor="#B5B5B5"
-                name="response"
-                onChange={handleChange}
+                value={dataReservasiDetail?.reply?.response}
+                disabled
               />
             </Box>
             <Box display="flex" mb={5} flexDirection="column" w="90%">
@@ -198,8 +146,8 @@ function ReservasiDetailAdmin({ detailId, onClose, refetchDataReservasi }) {
                 bg="#E1E1E1"
                 borderWidth={'2px'}
                 borderColor="#B5B5B5"
-                name="meetType"
-                onChange={handleChange}
+                value={dataReservasiDetail?.reply?.meetType}
+                disabled
               >
                 <option value="Google Meet">Google Meet</option>
                 <option value="Zoom">Zoom</option>
@@ -218,8 +166,8 @@ function ReservasiDetailAdmin({ detailId, onClose, refetchDataReservasi }) {
                 bg="#E1E1E1"
                 borderWidth={'2px'}
                 borderColor="#B5B5B5"
-                name="meetLink"
-                onChange={handleChange}
+                value={dataReservasiDetail?.reply?.meetLink}
+                disabled
               />
             </Box>
             <Box display="flex" justifyContent="flex-end" w="90%">
@@ -232,7 +180,7 @@ function ReservasiDetailAdmin({ detailId, onClose, refetchDataReservasi }) {
                 colorScheme="red"
                 mr={3}
                 _hover={{ backgroundColor: '#BD022E' }}
-                onClick={() => handleSubmitCancel()}
+                disabled
               >
                 Cancel
               </Button>
@@ -244,7 +192,7 @@ function ReservasiDetailAdmin({ detailId, onClose, refetchDataReservasi }) {
                 fontWeight={'bold'}
                 _hover={{ backgroundColor: '#04915B' }}
                 colorScheme="whatsapp"
-                onClick={() => handleSubmit()}
+                disabled
               >
                 Approve
               </Button>
@@ -256,4 +204,4 @@ function ReservasiDetailAdmin({ detailId, onClose, refetchDataReservasi }) {
   );
 }
 
-export default ReservasiDetailAdmin;
+export default ReservasiDetailViewAdmin;

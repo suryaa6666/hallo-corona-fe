@@ -20,15 +20,16 @@ import { API } from '../config/api';
 import { golangDateConvert, milisToDate } from '../helpers/converter';
 import { Success, Error } from '../helpers/toast';
 
-function ReservasiDetailAdmin({ detailId, onClose, refetchDataReservasi }) {
-  let { data: dataReservasiDetail, isLoading } = useQuery(
-    'reservasiDetailCaches',
-    async () => {
-      const response = await API.get(`/consultation/${detailId}`);
-      console.log('data detail', response.data.data);
-      return response.data.data;
-    }
-  );
+function ReservasiDetailEditAdmin({ detailId, onClose, refetchDataReservasi }) {
+  let {
+    data: dataReservasiDetail,
+    isLoading,
+    refetch: refetchDataReservasiEdit,
+  } = useQuery('reservasiDetailEditCaches', async () => {
+    const response = await API.get(`/consultation/${detailId}`);
+    console.log('data detail', response.data.data);
+    return response.data.data;
+  });
 
   const [dataReservasi, setDataReservasi] = useState({
     response: '',
@@ -43,35 +44,33 @@ function ReservasiDetailAdmin({ detailId, onClose, refetchDataReservasi }) {
     });
   }
 
-  async function handleSubmit() {
+  async function handleSubmitEdit() {
     try {
-      // add reply
-      const replyResponse = await API.post('/reply', dataReservasi);
-      // terus id nya diminta buat ngeupdate statusnya
-      console.log('reply response', replyResponse);
       const consultationResponse = await API.patch(
-        `/consultationstatus/${detailId}`,
+        `/reply/${dataReservasiDetail.reply.id}`,
         {
-          status: 'success',
-          replyId: replyResponse.data.data.id,
+          response: dataReservasi.response,
+          meetLink: dataReservasi.meetLink,
+          meetType: dataReservasi.meetType,
         }
       );
       console.log('consultation response', consultationResponse);
-      Success({ message: `Berhasil menambahkan tanggapan 🤩` });
+      Success({ message: `Berhasil mengubah tanggapan 🤩` });
+      refetchDataReservasiEdit();
       refetchDataReservasi();
       onClose();
     } catch (err) {
-      Error({ message: `Tanggapan gagal ditambahkan 😥` });
+      Error({ message: `Gagal mengubah tanggapan 😥` });
       console.log(err);
     }
   }
 
-  async function handleSubmitCancel() {
+  async function handleSubmitStatus(status) {
     try {
-      await API.patch(`/consultationstatus/${detailId}`, {
-        status: 'cancel',
-      });
-      Success({ message: `Berhasil membatalkan konsultasi user 🤩` });
+      await API.patch(`/consultationstatus/${detailId}`, { status });
+      status === 'success'
+        ? Success({ message: `Berhasil menyetujui konsultasi user 🤩` })
+        : Success({ message: `Berhasil membatalkan konsultasi user 🤩` });
       refetchDataReservasi();
       onClose();
     } catch (err) {
@@ -183,6 +182,7 @@ function ReservasiDetailAdmin({ detailId, onClose, refetchDataReservasi }) {
                 bg="#E1E1E1"
                 borderWidth={'2px'}
                 borderColor="#B5B5B5"
+                defaultValue={dataReservasiDetail.reply.response}
                 name="response"
                 onChange={handleChange}
               />
@@ -198,6 +198,7 @@ function ReservasiDetailAdmin({ detailId, onClose, refetchDataReservasi }) {
                 bg="#E1E1E1"
                 borderWidth={'2px'}
                 borderColor="#B5B5B5"
+                defaultValue={dataReservasiDetail.reply.meetType}
                 name="meetType"
                 onChange={handleChange}
               >
@@ -218,6 +219,7 @@ function ReservasiDetailAdmin({ detailId, onClose, refetchDataReservasi }) {
                 bg="#E1E1E1"
                 borderWidth={'2px'}
                 borderColor="#B5B5B5"
+                defaultValue={dataReservasiDetail.reply.meetLink}
                 name="meetLink"
                 onChange={handleChange}
               />
@@ -232,7 +234,7 @@ function ReservasiDetailAdmin({ detailId, onClose, refetchDataReservasi }) {
                 colorScheme="red"
                 mr={3}
                 _hover={{ backgroundColor: '#BD022E' }}
-                onClick={() => handleSubmitCancel()}
+                onClick={() => handleSubmitStatus('cancel')}
               >
                 Cancel
               </Button>
@@ -240,13 +242,26 @@ function ReservasiDetailAdmin({ detailId, onClose, refetchDataReservasi }) {
                 bg="#0ACF83"
                 py={2}
                 px={4}
+                mr={3}
                 color="white"
                 fontWeight={'bold'}
                 _hover={{ backgroundColor: '#04915B' }}
                 colorScheme="whatsapp"
-                onClick={() => handleSubmit()}
+                onClick={() => handleSubmitStatus('success')}
               >
                 Approve
+              </Button>
+              <Button
+                bg="orange"
+                py={2}
+                px={4}
+                color="white"
+                fontWeight={'bold'}
+                _hover={{ bg: 'yellow.500' }}
+                colorScheme="yellow"
+                onClick={() => handleSubmitEdit()}
+              >
+                Edit Tanggapan
               </Button>
             </Box>
           </Box>
@@ -256,4 +271,4 @@ function ReservasiDetailAdmin({ detailId, onClose, refetchDataReservasi }) {
   );
 }
 
-export default ReservasiDetailAdmin;
+export default ReservasiDetailEditAdmin;
