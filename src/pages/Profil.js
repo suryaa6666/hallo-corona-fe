@@ -151,7 +151,7 @@ function Profil({ checkAuth }) {
                     />
                     <Box display="flex" flexDirection={'column'}>
                       <Text fontSize="15px" fontWeight="bold" color="black">
-                        {state.user.fullName.toLowerCase() === 'male'
+                        {state.user.gender.toLowerCase() === 'male'
                           ? 'Pria'
                           : 'Wanita'}
                       </Text>

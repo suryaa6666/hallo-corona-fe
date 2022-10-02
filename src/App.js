@@ -8,8 +8,10 @@ import { API, setAuthorization } from './config/api';
 import { UserContext } from './context/userContext';
 import { Error } from './helpers/toast';
 import Artikel from './pages/Artikel';
+import EditArtikelAdmin from './pages/EditArtikelAdmin';
 import Home from './pages/Home';
 import Konsultasi from './pages/Konsultasi';
+import ListArtikelAdmin from './pages/ListArtikelAdmin';
 import { IsDoctor, IsLogin } from './pages/PrivateRoute';
 import Profil from './pages/Profil';
 import Reservasi from './pages/Reservasi';
@@ -96,9 +98,14 @@ function App() {
                     path="/reservasi-data"
                     element={<ReservasiDataAdmin />}
                   />
+                  <Route path="/list-artikel" element={<ListArtikelAdmin />} />
                   <Route
                     path="/tambah-artikel"
                     element={<TambahArtikelAdmin />}
+                  />
+                  <Route
+                    path="/edit-artikel/:id"
+                    element={<EditArtikelAdmin />}
                   />
                 </Route>
               </Route>

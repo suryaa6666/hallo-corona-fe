@@ -23,11 +23,14 @@ import {
   Text,
   Textarea,
   useDisclosure,
+  NumberInput,
+  NumberInputField
 } from '@chakra-ui/react';
 import { useContext, useState } from 'react';
 import { BsBook } from 'react-icons/bs';
 import { FaHandsHelping, FaRegUser } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
+import { GrOrderedList } from 'react-icons/gr';
 import { RiArticleLine } from 'react-icons/ri';
 import { Link, useNavigate } from 'react-router-dom';
 import { API, setAuthorization } from '../config/api';
@@ -283,6 +286,16 @@ export default function NavbarComponent() {
                           style={{ marginRight: '5px' }}
                         />
                         Reservasi Data
+                      </MenuItem>
+                    </Link>
+                    <Link to="/list-artikel">
+                      <MenuItem>
+                        <GrOrderedList
+                          size={24}
+                          color={'#FF6185'}
+                          style={{ marginRight: '5px' }}
+                        />
+                        List Artikel
                       </MenuItem>
                     </Link>
                     <Link to="/tambah-artikel">
@@ -558,17 +571,20 @@ export default function NavbarComponent() {
               <Text fontWeight="bold" fontSize={'15px'} color="#000">
                 No. Telepon
               </Text>
-              <Input
-                w="100%"
-                h="30px"
-                mt={2}
-                p={4}
-                bg="#E1E1E1"
-                borderWidth={'2px'}
-                borderColor="#B5B5B5"
-                name="phone"
-                onChange={handleChangeRegister}
-              />
+              <NumberInput>
+                <NumberInputField
+                  maxLength={15}
+                  w="100%"
+                  h="30px"
+                  mt={2}
+                  p={4}
+                  bg="#E1E1E1"
+                  borderWidth={'2px'}
+                  borderColor="#B5B5B5"
+                  name="phone"
+                  onChange={handleChangeRegister}
+                />
+              </NumberInput>
             </Box>
             <Box display="flex" w="100%" py={3} flexDirection="column">
               <Text fontWeight="bold" fontSize={'15px'} color="#000">
