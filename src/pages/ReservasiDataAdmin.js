@@ -1,6 +1,7 @@
 import {
   Box,
-  Button, Modal,
+  Button,
+  Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
@@ -13,7 +14,7 @@ import {
   Th,
   Thead,
   Tr,
-  useDisclosure
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { BiEdit, BiSearch } from 'react-icons/bi';
@@ -133,6 +134,7 @@ function ReservasiDataAdmin() {
                                     }}
                                     w="50px"
                                     h="50px"
+                                    mr={2}
                                   >
                                     <GrView
                                       color={'#FF6185'}

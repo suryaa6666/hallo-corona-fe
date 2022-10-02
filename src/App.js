@@ -86,7 +86,10 @@ function App() {
               <Route path="/artikel/:id" element={<Artikel />} />
               <Route path="/reservasi" element={<Reservasi />} />
               <Route path="/" element={<IsLogin />}>
-                <Route path="/profil" element={<Profil />} />
+                <Route
+                  path="/profil"
+                  element={<Profil checkAuth={checkAuth} />}
+                />
                 <Route path="/konsultasi" element={<Konsultasi />} />
                 <Route path="/" element={<IsDoctor />}>
                   <Route
