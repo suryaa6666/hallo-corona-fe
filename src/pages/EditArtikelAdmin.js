@@ -111,13 +111,21 @@ function EditArtikelAdmin() {
     }
   );
 
-  let { data: dataCategories, isLoading: isLoadingDataCategories } = useQuery(
-    'editCategoryCache',
-    async () => {
-      const response = await API.get('/categories');
-      return response.data.data;
-    }
-  );
+  const [dataCategories, setDataCategories] = useState([]);
+  const [isLoadingDataCategories, setIsLoadingDataCategories] = useState([]);
+
+  async function getDataCategories() {
+    setIsLoadingDataCategories(true);
+    categoryId = [];
+    dataArticle.category.map(item => {
+      if (!categoryId.includes(item.id)) {
+        categoryId.push(item.id);
+      }
+    });
+    const response = await API.get('/categories');
+    setDataCategories(response.data.data);
+    setIsLoadingDataCategories(false);
+  }
 
   useEffect(() => {
     console.log(categoryId);
@@ -126,12 +134,7 @@ function EditArtikelAdmin() {
       // buat fetch data category edit
       // buat fetch default image
       if (dataArticle) {
-        categoryId = [];
-        dataArticle.category.map(item => {
-          if (!categoryId.includes(item.id)) {
-            categoryId.push(item.id);
-          }
-        });
+        getDataCategories();
         setDataArtikel({
           ...dataArtikel,
           title: dataArticle.title,
@@ -175,7 +178,6 @@ function EditArtikelAdmin() {
                     borderColor="#B5B5B5"
                     key={dataArticle.title}
                     defaultValue={dataArticle.title}
-                    value={dataArtikel.title}
                     name="title"
                     onChange={handleChange}
                   />
@@ -237,7 +239,6 @@ function EditArtikelAdmin() {
                     borderColor="#B5B5B5"
                     key={dataArticle.description}
                     defaultValue={dataArticle.description}
-                    value={dataArtikel.description}
                     name="description"
                     onChange={handleChange}
                   />
@@ -257,17 +258,21 @@ function EditArtikelAdmin() {
                   borderWidth={2}
                   borderColor="#B5B5B5"
                 >
-                  {dataCategories?.map((item, i) => (
-                    <Checkbox
-                      color="black"
-                      value={item.id}
-                      key={i}
-                      defaultChecked={categoryId.includes(item.id)}
-                      onChange={e => handleChangeCategory(e, item.id)}
-                    >
-                      {item.name}
-                    </Checkbox>
-                  ))}
+                  {isLoadingDataCategories ? (
+                    <></>
+                  ) : (
+                    dataCategories?.map((item, i) => (
+                      <Checkbox
+                        color="black"
+                        value={item.id}
+                        key={i}
+                        defaultChecked={categoryId.includes(item.id)}
+                        onChange={e => handleChangeCategory(e, item.id)}
+                      >
+                        {item.name}
+                      </Checkbox>
+                    ))
+                  )}
                 </HStack>
               </Box>
               <Button
