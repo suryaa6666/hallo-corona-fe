@@ -19,6 +19,7 @@ function Artikel() {
     }
   );
 
+  document.title = `${dataArticle.title} | Hallo Corona`;
   return (
     <>
       {isLoading ? (

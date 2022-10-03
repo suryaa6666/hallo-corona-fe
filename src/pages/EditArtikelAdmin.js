@@ -16,17 +16,21 @@ import NavbarComponent from '../components/NavbarComponent';
 import { API } from '../config/api';
 import { Error, Success } from '../helpers/toast';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // buat menampung category id yang ke check
 let categoryId = [];
 
 function EditArtikelAdmin() {
+  document.title = `Edit Artikel | Hallo Corona`;
   const [preview, setPreview] = useState(null);
   const [dataArtikel, setDataArtikel] = useState({
     title: '',
     description: '',
     image: '',
   });
+
+  const navigate = useNavigate();
 
   const { id } = useParams();
 
@@ -61,6 +65,13 @@ function EditArtikelAdmin() {
   }
 
   async function handleSubmit() {
+    console.log(
+      categoryId.filter((x, i, a) => {
+        if (!categoryId.includes(x.id)) {
+          return a.indexOf(x) === i;
+        }
+      })
+    );
     try {
       let formData = new FormData();
       formData.set('title', dataArtikel?.title);
@@ -79,6 +90,7 @@ function EditArtikelAdmin() {
       const response = await API.patch(`/article/${id}`, formData);
       Success({ message: `Berhasil mengubah artikel 🤩` });
       console.log(response);
+      navigate('/list-artikel');
     } catch (err) {
       Error({ message: `Gagal mengubah artikel 😥` });
       console.log(err);
@@ -90,11 +102,17 @@ function EditArtikelAdmin() {
     async () => {
       const response = await API.get(`/article/${id}`);
       return response.data.data;
+    },
+    {
+      cacheTime: 0,
+      retry: false,
+      refetchOnMount: false,
+      retryOnMount: false,
     }
   );
 
   let { data: dataCategories, isLoading: isLoadingDataCategories } = useQuery(
-    'categoryCache',
+    'editCategoryCache',
     async () => {
       const response = await API.get('/categories');
       return response.data.data;
@@ -102,15 +120,27 @@ function EditArtikelAdmin() {
   );
 
   useEffect(() => {
+    console.log(categoryId);
+    // set default data artikel
     if (!isLoadingDataArticle) {
-      dataArticle.category.map(item => {
-        if (!categoryId.includes(item.id)) {
-          categoryId.push(item.id);
-        }
-      });
-      setPreview(dataArticle.image);
+      // buat fetch data category edit
+      // buat fetch default image
+      if (dataArticle) {
+        categoryId = [];
+        dataArticle.category.map(item => {
+          if (!categoryId.includes(item.id)) {
+            categoryId.push(item.id);
+          }
+        });
+        setDataArtikel({
+          ...dataArtikel,
+          title: dataArticle.title,
+          description: dataArticle.description,
+        });
+        setPreview(dataArticle?.image);
+      }
     }
-  }, [isLoadingDataArticle, categoryId]);
+  }, [isLoadingDataArticle, dataArticle]);
 
   return (
     <>
@@ -143,7 +173,9 @@ function EditArtikelAdmin() {
                     bg="#E1E1E1"
                     borderWidth={'2px'}
                     borderColor="#B5B5B5"
+                    key={dataArticle.title}
                     defaultValue={dataArticle.title}
+                    value={dataArtikel.title}
                     name="title"
                     onChange={handleChange}
                   />
@@ -203,7 +235,9 @@ function EditArtikelAdmin() {
                     bg="#E1E1E1"
                     borderWidth={'2px'}
                     borderColor="#B5B5B5"
+                    key={dataArticle.description}
                     defaultValue={dataArticle.description}
+                    value={dataArtikel.description}
                     name="description"
                     onChange={handleChange}
                   />
@@ -225,10 +259,10 @@ function EditArtikelAdmin() {
                 >
                   {dataCategories?.map((item, i) => (
                     <Checkbox
-                      key={i}
                       color="black"
                       value={item.id}
-                      isChecked={categoryId.includes(item.id)}
+                      key={i}
+                      defaultChecked={categoryId.includes(item.id)}
                       onChange={e => handleChangeCategory(e, item.id)}
                     >
                       {item.name}

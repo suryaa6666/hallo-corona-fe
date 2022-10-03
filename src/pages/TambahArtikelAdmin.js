@@ -14,17 +14,22 @@ import LoadingComponent from '../components/LoadingComponent';
 import NavbarComponent from '../components/NavbarComponent';
 import { API } from '../config/api';
 import { Error, Success } from '../helpers/toast';
+import { useNavigate } from 'react-router-dom';
 
 // buat menampung category id yang ke check
 let categoryId = [];
 
 function TambahArtikelAdmin() {
+  document.title = `Tambah Artikel - Hallo Corona`;
+
   const [preview, setPreview] = useState(null);
   const [dataArtikel, setDataArtikel] = useState({
     title: '',
     description: '',
     image: '',
   });
+
+  const navigate = useNavigate();
 
   const hiddenFileInput = useRef(null);
 
@@ -67,6 +72,7 @@ function TambahArtikelAdmin() {
       const response = await API.post('/article', formData);
       Success({ message: `Berhasil menambahkan artikel 🤩` });
       console.log(response);
+      navigate('/list-artikel');
     } catch (err) {
       Error({ message: `Gagal menambahkan artikel 😥` });
       console.log(err);

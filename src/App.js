@@ -12,6 +12,7 @@ import EditArtikelAdmin from './pages/EditArtikelAdmin';
 import Home from './pages/Home';
 import Konsultasi from './pages/Konsultasi';
 import ListArtikelAdmin from './pages/ListArtikelAdmin';
+import PageNotFound from './pages/PageNotFound';
 import { IsDoctor, IsLogin } from './pages/PrivateRoute';
 import Profil from './pages/Profil';
 import Reservasi from './pages/Reservasi';
@@ -85,6 +86,7 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="*" element={<PageNotFound />} />
               <Route path="/artikel/:id" element={<Artikel />} />
               <Route path="/reservasi" element={<Reservasi />} />
               <Route path="/" element={<IsLogin />}>

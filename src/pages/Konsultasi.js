@@ -7,6 +7,8 @@ import { API } from '../config/api';
 import { golangDateConvert, milisToDate } from '../helpers/converter';
 
 function Konsultasi() {
+  document.title = `Konsultasi - Hallo Corona`;
+
   const { data: dataConsultation, isLoading } = useQuery(
     'consultationsCache',
     async () => {

@@ -7,6 +7,8 @@ import NavbarComponent from '../components/NavbarComponent';
 import { API } from '../config/api';
 
 function Home() {
+  document.title = `Hallo Corona - Artikel dan Konsultasi Corona Terbaik`;
+
   const { data: dataArticles, isLoading } = useQuery(
     'articlesCache',
     async () => {

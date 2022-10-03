@@ -29,6 +29,9 @@ import { API } from '../config/api';
 import { golangDateConvert } from '../helpers/converter';
 
 function ReservasiDataAdmin() {
+
+    document.title = `Reservasi Data - Hallo Corona`;
+
   const [selectedDetailId, setSelectedDetailId] = useState();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {

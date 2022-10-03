@@ -7,6 +7,8 @@ import { Success, Error } from '../helpers/toast';
 import LoadingComponent from '../components/LoadingComponent';
 
 function Profil({ checkAuth }) {
+  document.title = `Profil - Hallo Corona`;
+
   const [state] = useContext(UserContext);
   const [isLoadingProfile, setIsLoadingProfile] = useState(false);
 

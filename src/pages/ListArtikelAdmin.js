@@ -32,6 +32,8 @@ import { golangDateConvert } from '../helpers/converter';
 import { Success, Error } from '../helpers/toast';
 
 function ListArtikelAdmin() {
+  document.title = `List Artikel - Hallo Corona`;
+
   const {
     data: dataArticles,
     isLoading,
@@ -140,6 +142,7 @@ function ListArtikelAdmin() {
                                   }}
                                   w="50px"
                                   h="50px"
+                                  mr={2}
                                 >
                                   <BiEdit
                                     color={'#FF6185'}

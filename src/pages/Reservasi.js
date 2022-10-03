@@ -17,6 +17,8 @@ import { Success, Error } from '../helpers/toast';
 import { API } from '../config/api';
 
 function Artikel() {
+  document.title = `Buat Reservasi - Hallo Corona`;
+
   const [dataReservasi, setDataReservasi] = useState({
     fullName: '',
     phone: '',
